@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/HotspotOptimizerLibrary/HotspotOptimizerLibrary.iml" filepath="$PROJECT_DIR$/HotspotOptimizerLibrary/HotspotOptimizerLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RootProject.iml" filepath="$PROJECT_DIR$/RootProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SearchResults/SearchResults.iml" filepath="$PROJECT_DIR$/SearchResults/SearchResults.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SearchService/SearchService.iml" filepath="$PROJECT_DIR$/SearchService/SearchService.iml" />
+    </modules>
+  </component>
+</project>
