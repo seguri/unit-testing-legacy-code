@@ -9,11 +9,10 @@ import java.util.UUID;
 public class AssetVendorFixture {
 
   public static AssetVendor assetVendor() {
-//    return new AssetVendor(UUID.randomUUID().toString(), "DISPLAY_NAME", Basic, 0);
-    return null;
+    return assetVendor(Basic);
   }
 
   public static AssetVendor assetVendor(AssetVendorRelationshipLevel level) {
-    return null;
+    return new AssetVendor(UUID.randomUUID().toString(), "DISPLAY_NAME", level, 0);
   }
 }
