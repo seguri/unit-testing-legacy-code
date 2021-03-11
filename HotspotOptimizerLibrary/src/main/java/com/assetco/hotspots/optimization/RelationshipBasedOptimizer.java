@@ -12,20 +12,16 @@ import com.assetco.search.results.Asset;
 import com.assetco.search.results.Hotspot;
 import com.assetco.search.results.SearchResults;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Objects;
 
 class RelationshipBasedOptimizer {
   public void optimize(SearchResults searchResults) {
-    Iterator<Asset> iterator = searchResults.getFound().iterator();
-    var showcaseFull = searchResults.getHotspot(Showcase).getMembers().size() > 0;
     var showcaseAssets = new ArrayList<Asset>();
     var partnerAssets = new ArrayList<Asset>();
     var goldAssets = new ArrayList<Asset>();
     var silverAssets = new ArrayList<Asset>();
 
-    while (iterator.hasNext()) {
-      Asset asset = iterator.next();
+    for (Asset asset : searchResults.getFound()) {
       if (asset.getVendor().getRelationshipLevel() == Gold) {
         goldAssets.add(asset);
       } else if (asset.getVendor().getRelationshipLevel() == Silver) {
@@ -69,7 +65,8 @@ class RelationshipBasedOptimizer {
       searchResults.getHotspot(Fold).addMember(asset);
     }
 
-    if (!showcaseFull && showcaseAssets.size() >= 3) {
+    var showcaseEmpty = searchResults.getHotspot(Showcase).getMembers().isEmpty();
+    if (showcaseEmpty && showcaseAssets.size() >= 3) {
       Hotspot showcaseHotspot = searchResults.getHotspot(Showcase);
       for (Asset asset : showcaseAssets) {
         showcaseHotspot.addMember(asset);
