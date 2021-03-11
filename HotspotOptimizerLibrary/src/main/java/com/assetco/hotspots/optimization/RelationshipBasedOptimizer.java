@@ -26,43 +26,68 @@ class RelationshipBasedOptimizer {
 
     while (iterator.hasNext()) {
       Asset asset = iterator.next();
-      if (asset.getVendor().getRelationshipLevel() == Gold) goldAssets.add(asset);
-      else if (asset.getVendor().getRelationshipLevel() == Silver) silverAssets.add(asset);
+      if (asset.getVendor().getRelationshipLevel() == Gold) {
+        goldAssets.add(asset);
+      } else if (asset.getVendor().getRelationshipLevel() == Silver) {
+        silverAssets.add(asset);
+      }
 
-      if (asset.getVendor().getRelationshipLevel() != Partner) continue;
+      if (asset.getVendor().getRelationshipLevel() != Partner) {
+        continue;
+      }
 
       partnerAssets.add(asset);
 
       if (showcaseAssets.size() >= 5) {
-        if (Objects.equals(showcaseAssets.get(0).getVendor(), asset.getVendor()))
+        if (Objects.equals(showcaseAssets.get(0).getVendor(), asset.getVendor())) {
           searchResults.getHotspot(TopPicks).addMember(asset);
+        }
       } else {
-        if (showcaseAssets.size() != 0)
-          if (!Objects.equals(showcaseAssets.get(0).getVendor(), asset.getVendor()))
-            if (showcaseAssets.size() < 3) showcaseAssets.clear();
+        if (showcaseAssets.size() != 0) {
+          if (!Objects.equals(showcaseAssets.get(0).getVendor(), asset.getVendor())) {
+            if (showcaseAssets.size() < 3) {
+              showcaseAssets.clear();
+            }
+          }
+        }
 
         if (showcaseAssets.size() == 0
-            || Objects.equals(showcaseAssets.get(0).getVendor(), asset.getVendor()))
+            || Objects.equals(showcaseAssets.get(0).getVendor(), asset.getVendor())) {
           showcaseAssets.add(asset);
+        }
       }
     }
 
     var highValueHotspot = searchResults.getHotspot(HighValue);
-    for (var asset : partnerAssets)
-      if (!highValueHotspot.getMembers().contains(asset)) highValueHotspot.addMember(asset);
+    for (var asset : partnerAssets) {
+      if (!highValueHotspot.getMembers().contains(asset)) {
+        highValueHotspot.addMember(asset);
+      }
+    }
 
-    for (var asset : partnerAssets) searchResults.getHotspot(Fold).addMember(asset);
+    for (var asset : partnerAssets) {
+      searchResults.getHotspot(Fold).addMember(asset);
+    }
 
     if (!showcaseFull && showcaseAssets.size() >= 3) {
       Hotspot showcaseHotspot = searchResults.getHotspot(Showcase);
-      for (Asset asset : showcaseAssets) showcaseHotspot.addMember(asset);
+      for (Asset asset : showcaseAssets) {
+        showcaseHotspot.addMember(asset);
+      }
     }
 
-    for (var asset : goldAssets)
-      if (!highValueHotspot.getMembers().contains(asset)) highValueHotspot.addMember(asset);
+    for (var asset : goldAssets) {
+      if (!highValueHotspot.getMembers().contains(asset)) {
+        highValueHotspot.addMember(asset);
+      }
+    }
 
-    for (var asset : goldAssets) searchResults.getHotspot(Fold).addMember(asset);
+    for (var asset : goldAssets) {
+      searchResults.getHotspot(Fold).addMember(asset);
+    }
 
-    for (var asset : silverAssets) searchResults.getHotspot(Fold).addMember(asset);
+    for (var asset : silverAssets) {
+      searchResults.getHotspot(Fold).addMember(asset);
+    }
   }
 }
