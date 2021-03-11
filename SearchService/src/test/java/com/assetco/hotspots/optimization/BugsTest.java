@@ -11,7 +11,6 @@ import com.assetco.search.results.Asset;
 import com.assetco.search.results.AssetVendor;
 import com.assetco.search.results.HotspotKey;
 import com.assetco.search.results.SearchResults;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -61,8 +60,9 @@ class BugsTest {
 
   private void thenHotspotDoesNotHave(HotspotKey key, Asset... forbiddenAssets) {
     var members = searchResults.getHotspot(key).getMembers();
-    Arrays.stream(forbiddenAssets)
-        .forEach(forbiddenAsset -> assertFalse(members.contains(forbiddenAsset)));
+    for (Asset forbiddenAsset : forbiddenAssets) {
+      assertFalse(members.contains(forbiddenAsset));
+    }
   }
 
   private void thenHotspotHasExactly(HotspotKey key, List<Asset> expected) {
