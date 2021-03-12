@@ -9,14 +9,17 @@ import static com.assetco.search.results.HotspotKey.Showcase;
 import static com.assetco.search.results.HotspotKey.TopPicks;
 
 import com.assetco.search.results.Asset;
+import com.assetco.search.results.AssetVendor;
 import com.assetco.search.results.Hotspot;
 import com.assetco.search.results.SearchResults;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 class RelationshipBasedOptimizer {
   public void optimize(SearchResults searchResults) {
     var showcaseAssets = new ArrayList<Asset>();
+    var showcaseAssetsByPartner = new HashMap<AssetVendor, ArrayList<Asset>>();
     var partnerAssets = new ArrayList<Asset>();
     var goldAssets = new ArrayList<Asset>();
     var silverAssets = new ArrayList<Asset>();
@@ -35,6 +38,12 @@ class RelationshipBasedOptimizer {
 
       partnerAssets.add(asset);
 
+      if (showcaseAssets.isEmpty()) {
+        // Get or initialize assets for the current vendor
+        showcaseAssets =
+            showcaseAssetsByPartner.merge(vendor, new ArrayList<>(), (old, new_) -> old);
+      }
+
       if (showcaseAssets.size() >= 5) {
         if (Objects.equals(showcaseAssets.get(0).getVendor(), vendor)) {
           searchResults.getHotspot(TopPicks).addMember(asset);
@@ -43,7 +52,9 @@ class RelationshipBasedOptimizer {
         if (showcaseAssets.size() != 0) {
           if (!Objects.equals(showcaseAssets.get(0).getVendor(), vendor)) {
             if (showcaseAssets.size() < 3) {
-              showcaseAssets.clear();
+              // Don't delete the assets, get or initialize assets for the current vendor instead
+              showcaseAssets =
+                  showcaseAssetsByPartner.merge(vendor, new ArrayList<>(), (old, new_) -> old);
             }
           }
         }

@@ -5,7 +5,6 @@ import static com.assetco.hotspots.optimization.fixture.AssetVendorFixture.asset
 import static com.assetco.search.results.AssetVendorRelationshipLevel.Partner;
 import static com.assetco.search.results.HotspotKey.Showcase;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.assetco.search.results.Asset;
 import com.assetco.search.results.AssetVendor;
@@ -32,13 +31,12 @@ class BugsTest {
   void precedingPartnerWithLongTrailingAssetsDoesNotWin() {
     var partnerVendor = assetVendor(Partner);
     var otherPartnerVendor = assetVendor(Partner);
-    var missing = givenAssetInResultsWithVendor(partnerVendor);
-    givenAssetInResultsWithVendor(otherPartnerVendor);
     var expected = givenAssetsInResultsWithVendor(partnerVendor, 4);
+    expected.add(givenAssetInResultsWithVendor(partnerVendor));
+    givenAssetInResultsWithVendor(otherPartnerVendor);
 
     whenOptimize();
 
-    thenHotspotDoesNotHave(Showcase, missing);
     thenHotspotHasExactly(Showcase, expected);
   }
 
@@ -56,13 +54,6 @@ class BugsTest {
 
   private void whenOptimize() {
     optimizer.optimize(searchResults);
-  }
-
-  private void thenHotspotDoesNotHave(HotspotKey key, Asset... forbiddenAssets) {
-    var members = searchResults.getHotspot(key).getMembers();
-    for (Asset forbiddenAsset : forbiddenAssets) {
-      assertFalse(members.contains(forbiddenAsset));
-    }
   }
 
   private void thenHotspotHasExactly(HotspotKey key, List<Asset> expected) {
