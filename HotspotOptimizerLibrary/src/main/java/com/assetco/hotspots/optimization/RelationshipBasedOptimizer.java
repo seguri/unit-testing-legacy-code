@@ -22,25 +22,26 @@ class RelationshipBasedOptimizer {
     var silverAssets = new ArrayList<Asset>();
 
     for (Asset asset : searchResults.getFound()) {
-      if (asset.getVendor().getRelationshipLevel() == Gold) {
+      var vendor = asset.getVendor();
+      if (vendor.getRelationshipLevel() == Gold) {
         goldAssets.add(asset);
-      } else if (asset.getVendor().getRelationshipLevel() == Silver) {
+      } else if (vendor.getRelationshipLevel() == Silver) {
         silverAssets.add(asset);
       }
 
-      if (asset.getVendor().getRelationshipLevel() != Partner) {
+      if (vendor.getRelationshipLevel() != Partner) {
         continue;
       }
 
       partnerAssets.add(asset);
 
       if (showcaseAssets.size() >= 5) {
-        if (Objects.equals(showcaseAssets.get(0).getVendor(), asset.getVendor())) {
+        if (Objects.equals(showcaseAssets.get(0).getVendor(), vendor)) {
           searchResults.getHotspot(TopPicks).addMember(asset);
         }
       } else {
         if (showcaseAssets.size() != 0) {
-          if (!Objects.equals(showcaseAssets.get(0).getVendor(), asset.getVendor())) {
+          if (!Objects.equals(showcaseAssets.get(0).getVendor(), vendor)) {
             if (showcaseAssets.size() < 3) {
               showcaseAssets.clear();
             }
@@ -48,7 +49,7 @@ class RelationshipBasedOptimizer {
         }
 
         if (showcaseAssets.size() == 0
-            || Objects.equals(showcaseAssets.get(0).getVendor(), asset.getVendor())) {
+            || Objects.equals(showcaseAssets.get(0).getVendor(), vendor)) {
           showcaseAssets.add(asset);
         }
       }
