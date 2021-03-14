@@ -2,6 +2,8 @@ package com.assetco.hotspots.optimization;
 
 import static com.assetco.search.results.HotspotKey.HighValue;
 
+import com.assetco.search.results.Asset;
+import com.assetco.search.results.Hotspot;
 import com.assetco.search.results.SearchResults;
 import java.math.BigDecimal;
 
@@ -46,8 +48,14 @@ class SalesInfoBasedOptimizer {
       if (asset.getPurchaseInfoLast30Days().getTimesShown() >= 50000
           && asset.getPurchaseInfoLast30Days().getTimesPurchased() * 125
               >= asset.getPurchaseInfoLast30Days().getTimesShown()) {
-        searchResults.getHotspot(HighValue).addMember(asset);
+        addIfAbsent(searchResults.getHotspot(HighValue), asset);
       }
+    }
+  }
+
+  private void addIfAbsent(Hotspot hotspot, Asset asset) {
+    if (!hotspot.getMembers().contains(asset)) {
+      hotspot.addMember(asset);
     }
   }
 }
