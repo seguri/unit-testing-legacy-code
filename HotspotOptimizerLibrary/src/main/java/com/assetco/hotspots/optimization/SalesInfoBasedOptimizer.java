@@ -8,7 +8,9 @@ import java.math.BigDecimal;
 class SalesInfoBasedOptimizer {
   public void optimize(SearchResults searchResults) {
     for (var asset : searchResults.getFound()) {
-      if (searchResults.getHotspot(HighValue).getMembers().contains(asset)) break;
+      if (searchResults.getHotspot(HighValue).getMembers().contains(asset)) {
+        break;
+      }
 
       var delta =
           asset
@@ -23,24 +25,29 @@ class SalesInfoBasedOptimizer {
                   .getAmount()
                   .compareTo(new BigDecimal("5000.00"))
               >= 0
-          && delta.compareTo(new BigDecimal("4000.00")) >= 0)
+          && delta.compareTo(new BigDecimal("4000.00")) >= 0) {
         searchResults.getHotspot(HighValue).addMember(asset);
+      }
     }
 
     for (var asset : searchResults.getFound()) {
-      if (searchResults.getHotspot(HighValue).getMembers().size() > 0) return;
+      if (searchResults.getHotspot(HighValue).getMembers().size() > 0) {
+        return;
+      }
 
       if (asset.getPurchaseInfoLast24Hours().getTimesShown() >= 1000
           && asset.getPurchaseInfoLast24Hours().getTimesPurchased() * 200
-              >= asset.getPurchaseInfoLast24Hours().getTimesShown())
+              >= asset.getPurchaseInfoLast24Hours().getTimesShown()) {
         searchResults.getHotspot(HighValue).addMember(asset);
+      }
     }
 
     for (var asset : searchResults.getFound()) {
       if (asset.getPurchaseInfoLast30Days().getTimesShown() >= 50000
           && asset.getPurchaseInfoLast30Days().getTimesPurchased() * 125
-              >= asset.getPurchaseInfoLast30Days().getTimesShown())
+              >= asset.getPurchaseInfoLast30Days().getTimesShown()) {
         searchResults.getHotspot(HighValue).addMember(asset);
+      }
     }
   }
 }
