@@ -24,29 +24,39 @@ class TopicsBasedOptimizer {
     while (iterator.hasNext()) {
       Asset asset = iterator.next();
 
-      if (hotTopics.size() == 0) hotTopicsSource.getTopics().forEach(hotTopics::add);
+      if (hotTopics.size() == 0) {
+        hotTopicsSource.getTopics().forEach(hotTopics::add);
+      }
 
-      if (getHottestTopicIn(asset, hotTopics) != null)
+      if (getHottestTopicIn(asset, hotTopics) != null) {
         searchResults.getHotspot(Highlight).addMember(asset);
+      }
 
-      if (hotTopic == null) hotTopic = getHottestTopicIn(asset, hotTopics);
+      if (hotTopic == null) {
+        hotTopic = getHottestTopicIn(asset, hotTopics);
+      }
 
       AssetTopic assetHotTopic = getHottestTopicIn(asset, hotTopics);
       if (assetHotTopic != null) {
         if (isHotterTopic(assetHotTopic, hotTopic, hotTopics)) {
-          for (var surplusAsset : showcaseAssets)
+          for (var surplusAsset : showcaseAssets) {
             searchResults.getHotspot(TopPicks).addMember(surplusAsset);
+          }
           showcaseAssets.clear();
           hotTopic = assetHotTopic;
           showcased = 0;
         }
 
-        if (assetHotTopic == hotTopic) showcaseAssets.add(asset);
+        if (assetHotTopic == hotTopic) {
+          showcaseAssets.add(asset);
+        }
       } else {
         continue;
       }
 
-      if (++showcased > 2) break;
+      if (++showcased > 2) {
+        break;
+      }
     }
 
     var showcase = searchResults.getHotspot(Showcase);
@@ -61,15 +71,18 @@ class TopicsBasedOptimizer {
 
       if (asset.getTopics().stream().anyMatch(getAssetTopicPredicate(hotTopic))) {
         showcase.addMember(asset);
-        if (++showcased >= 5) break;
+        if (++showcased >= 5) {
+          break;
+        }
       }
     }
 
     while (iterator.hasNext()) {
       Asset asset = iterator.next();
 
-      if (getHottestTopicIn(asset, hotTopics) != null)
+      if (getHottestTopicIn(asset, hotTopics) != null) {
         searchResults.getHotspot(TopPicks).addMember(asset);
+      }
     }
 
     return result;
@@ -85,14 +98,18 @@ class TopicsBasedOptimizer {
 
   private AssetTopic getHottestTopicIn(Asset asset, ArrayList<AssetTopic> hotTopics) {
     for (var topic : hotTopics) {
-      if (asset.getTopics().stream().anyMatch(getAssetTopicPredicate(topic))) return topic;
+      if (asset.getTopics().stream().anyMatch(getAssetTopicPredicate(topic))) {
+        return topic;
+      }
     }
 
     return null;
   }
 
   private Predicate<AssetTopic> getAssetTopicPredicate(AssetTopic topic) {
-    if (topic == null) return assetTopic -> false;
+    if (topic == null) {
+      return assetTopic -> false;
+    }
 
     return assetTopic -> topicsEquivalent(topic, assetTopic);
   }
