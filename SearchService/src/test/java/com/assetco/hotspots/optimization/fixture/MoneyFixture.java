@@ -5,9 +5,11 @@ import java.math.BigDecimal;
 
 public class MoneyFixture {
 
-  public static Money money() {
-    var randomAmount = BigDecimal.valueOf(Math.random());
-    return new Money(randomAmount);
+  public static Money money(double amount) {
+    return new Money(BigDecimal.valueOf(amount));
   }
 
+  public static Money money(String amount) {
+    return new Money(new BigDecimal(amount));
+  }
 }

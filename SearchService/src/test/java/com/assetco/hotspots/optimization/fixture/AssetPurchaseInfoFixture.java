@@ -3,19 +3,20 @@ package com.assetco.hotspots.optimization.fixture;
 import static com.assetco.hotspots.optimization.fixture.MoneyFixture.money;
 
 import com.assetco.search.results.AssetPurchaseInfo;
-import java.util.Random;
 
 public class AssetPurchaseInfoFixture {
 
-  private static final Random RANDOM = new Random();
+  public static AssetPurchaseInfo assetPurchaseInfo(
+      long timesShown, long timesPurchased, double totalRevenue, double totalRoyaltiesOwed) {
+    return new AssetPurchaseInfo(
+        timesShown, timesPurchased, money(totalRevenue), money(totalRoyaltiesOwed));
+  }
 
   public static AssetPurchaseInfo assetPurchaseInfo(long timesShown, long timesPurchased) {
-    var totalRevenue = money();
-    var totalRoyaltiesOwed = money();
-    return new AssetPurchaseInfo(timesShown, timesPurchased, totalRevenue, totalRoyaltiesOwed);
+    return assetPurchaseInfo(timesShown, timesPurchased, 0, 0);
   }
 
   public static AssetPurchaseInfo assetPurchaseInfo() {
-    return assetPurchaseInfo(RANDOM.nextLong(), RANDOM.nextLong());
+    return assetPurchaseInfo(0, 0, 0, 0);
   }
 }
