@@ -10,30 +10,16 @@ import static com.assetco.search.results.AssetVendorRelationshipLevel.Partner;
 import static com.assetco.search.results.HotspotKey.HighValue;
 import static com.assetco.search.results.HotspotKey.Highlight;
 import static com.assetco.search.results.HotspotKey.Showcase;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.assetco.search.results.Asset;
 import com.assetco.search.results.AssetTopic;
 import com.assetco.search.results.AssetVendor;
-import com.assetco.search.results.HotspotKey;
-import com.assetco.search.results.SearchResults;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class BugsTest {
-
-  private SearchResults searchResults;
-  private SearchResultHotspotOptimizer sut;
-
-  @BeforeEach
-  void setup() {
-    searchResults = new SearchResults();
-    sut = new SearchResultHotspotOptimizer();
-  }
+class BugsTest extends AbstractOptimizerTest {
 
   @Test
   void prevailingPartnerReceivesFirstFiveItemsInShowcase() {
@@ -73,7 +59,7 @@ class BugsTest {
 
     sut.optimize(searchResults);
 
-    thenHotspotHasExactly(HighValue, List.of(asset));
+    thenHotspotHasExactly(HighValue, asset);
   }
 
   private Asset assetInSearchResults(AssetVendor vendor) {
@@ -103,17 +89,5 @@ class BugsTest {
     return IntStream.range(0, count)
         .mapToObj(i -> assetInSearchResults(vendor, topics))
         .collect(Collectors.toList());
-  }
-
-  private void thenHotspotHasExactly(HotspotKey key, List<Asset> expected) {
-    var members = searchResults.getHotspot(key).getMembers().toArray(new Asset[0]);
-    assertArrayEquals(expected.toArray(new Asset[0]), members);
-  }
-
-  private void thenHotspotHas(HotspotKey key, List<Asset> expected) {
-    var members = searchResults.getHotspot(key).getMembers();
-    for (Asset asset : expected) {
-      assertTrue(members.contains(asset));
-    }
   }
 }
