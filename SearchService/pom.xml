@@ -105,7 +105,7 @@
         <artifactId>docker-compose-maven-plugin</artifactId>
         <version>4.0.0</version>
         <configuration>
-          <composeFile>${project.basedir}/../SearchService.docker-compose.yml</composeFile>
+          <composeFile>${project.parent.basedir}/docker-compose.yml</composeFile>
           <buildArgs>
             <removeOrphans>true</removeOrphans>
           </buildArgs>
