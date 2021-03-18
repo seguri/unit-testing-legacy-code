@@ -6,130 +6,105 @@ import static com.assetco.search.results.HotspotKey.Deals;
 
 import com.assetco.search.results.Asset;
 import com.assetco.search.results.AssetVendor;
+import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class DealsPinningTest extends AbstractOptimizerTest {
 
-  @Test
-  public void singleAsset() {
-    // parameterized initial case
-    singleAssetCase(PARTNER_VENDOR, "0", "1000", true, true);
-    // easy to generate many, many new cases in a very small amount of time
-    singleAssetCase(PARTNER_VENDOR, "0", "1000", false, true);
-    singleAssetCase(PARTNER_VENDOR, "200", "1000", true, true);
-    singleAssetCase(PARTNER_VENDOR, "600", "1000", true, true);
-    // run, fix expectation, repeat
-    singleAssetCase(PARTNER_VENDOR, "999.99", "1000", true, false);
-    singleAssetCase(PARTNER_VENDOR, "700", "1000", true, true);
-    singleAssetCase(PARTNER_VENDOR, "700.001", "1000", true, false);
-    singleAssetCase(PARTNER_VENDOR, "7", "10", true, true);
-    singleAssetCase(GOLD_VENDOR, "0", "1000", true, true);
-    singleAssetCase(GOLD_VENDOR, "0", "1000", false, true);
-    singleAssetCase(GOLD_VENDOR, "200", "1000", true, true);
-    singleAssetCase(GOLD_VENDOR, "600", "1000", true, true);
-    singleAssetCase(GOLD_VENDOR, "999.99", "1000", true, false);
-    singleAssetCase(GOLD_VENDOR, "700", "1000", true, true);
-    singleAssetCase(GOLD_VENDOR, "700", "1000", false, false);
-    singleAssetCase(GOLD_VENDOR, "700.001", "1000", true, false);
-    singleAssetCase(GOLD_VENDOR, "7", "10", true, false);
-    singleAssetCase(SILVER_VENDOR, "0", "1000", true, false);
-    singleAssetCase(SILVER_VENDOR, "0", "1000", false, false);
-    singleAssetCase(SILVER_VENDOR, "200", "1000", true, false);
-    singleAssetCase(SILVER_VENDOR, "600", "1000", true, false);
-    singleAssetCase(SILVER_VENDOR, "999.99", "1000", true, false);
-    singleAssetCase(SILVER_VENDOR, "700", "1000", true, false);
-    singleAssetCase(SILVER_VENDOR, "700.001", "1000", true, false);
-    singleAssetCase(SILVER_VENDOR, "0", "1500", true, true);
-    singleAssetCase(SILVER_VENDOR, "0", "1500", false, true);
-    singleAssetCase(SILVER_VENDOR, "200", "1500", true, true);
-    singleAssetCase(SILVER_VENDOR, "600", "1500", true, true);
-    singleAssetCase(SILVER_VENDOR, "600", "1500", false, true);
-    singleAssetCase(SILVER_VENDOR, "999.99", "1500", true, true);
-    singleAssetCase(SILVER_VENDOR, "999.99", "1500", false, false);
-    singleAssetCase(SILVER_VENDOR, "700", "1500", true, true);
-    singleAssetCase(SILVER_VENDOR, "700.001", "1500", true, true);
-    singleAssetCase(SILVER_VENDOR, "750.001", "1500", true, true);
-    singleAssetCase(SILVER_VENDOR, "1500.001", "2000", true, false);
-    singleAssetCase(SILVER_VENDOR, "7", "10", true, false);
-    singleAssetCase(BASIC_VENDOR, "0", "1000", true, false);
-    singleAssetCase(BASIC_VENDOR, "200", "1000", true, false);
-    singleAssetCase(BASIC_VENDOR, "600", "1000", true, false);
-    singleAssetCase(BASIC_VENDOR, "999.99", "1000", true, false);
-    singleAssetCase(BASIC_VENDOR, "700", "1000", true, false);
-    singleAssetCase(BASIC_VENDOR, "700.001", "1000", true, false);
-    singleAssetCase(BASIC_VENDOR, "7", "10", true, false);
+  private static List<SingleAssetCaseData> singleAssetCaseData() {
+    return List.of(
+        new SingleAssetCaseData(PARTNER_VENDOR, 1000.0, 0.0, true, true),
+        new SingleAssetCaseData(PARTNER_VENDOR, 1000.0, 0.0, false, true),
+        new SingleAssetCaseData(PARTNER_VENDOR, 1000.0, 200.0, true, true),
+        new SingleAssetCaseData(PARTNER_VENDOR, 1000.0, 600.0, true, true),
+        new SingleAssetCaseData(PARTNER_VENDOR, 1000.0, 999.99, true, false),
+        new SingleAssetCaseData(PARTNER_VENDOR, 1000.0, 700.0, true, true),
+        new SingleAssetCaseData(PARTNER_VENDOR, 1000.0, 700.001, true, false),
+        new SingleAssetCaseData(PARTNER_VENDOR, 10.0, 7.0, true, true));
   }
 
-  // noticed, looking at the code, that having multiple levels of vendor affects outcome
-  @Test
-  public void highPayoutLowerGradeAsset() {
-    highPayoutLowerGradeAssetCases(PARTNER_VENDOR, GOLD_VENDOR, "0", "1000", true, true);
-    highPayoutLowerGradeAssetCases(PARTNER_VENDOR, GOLD_VENDOR, "0", "1000", false, false);
-    highPayoutLowerGradeAssetCases(PARTNER_VENDOR, GOLD_VENDOR, "700", "1000", true, false);
-    highPayoutLowerGradeAssetCases(PARTNER_VENDOR, GOLD_VENDOR, "500", "1000", true, true);
-    highPayoutLowerGradeAssetCases(PARTNER_VENDOR, GOLD_VENDOR, "500.01", "1000", true, false);
-    highPayoutLowerGradeAssetCases(PARTNER_VENDOR, SILVER_VENDOR, "0", "100000", true, true);
-    highPayoutLowerGradeAssetCases(PARTNER_VENDOR, SILVER_VENDOR, "5000", "100000", true, true);
-    highPayoutLowerGradeAssetCases(PARTNER_VENDOR, SILVER_VENDOR, "5000", "100000", true, true);
-    highPayoutLowerGradeAssetCases(GOLD_VENDOR, SILVER_VENDOR, "0", "100000", true, true);
-    highPayoutLowerGradeAssetCases(GOLD_VENDOR, SILVER_VENDOR, "0", "100000", false, false);
-    highPayoutLowerGradeAssetCases(GOLD_VENDOR, SILVER_VENDOR, "0", "2000", true, true);
-    highPayoutLowerGradeAssetCases(GOLD_VENDOR, SILVER_VENDOR, "0", "1500", true, true);
-    highPayoutLowerGradeAssetCases(GOLD_VENDOR, SILVER_VENDOR, "0", "1499.99", true, false);
-    highPayoutLowerGradeAssetCases(GOLD_VENDOR, SILVER_VENDOR, "500", "1499.99", true, false);
-    highPayoutLowerGradeAssetCases(GOLD_VENDOR, SILVER_VENDOR, "750", "1500", true, true);
-    highPayoutLowerGradeAssetCases(GOLD_VENDOR, SILVER_VENDOR, "750.001", "1500", true, false);
+  private static List<HighPayoutCaseData> highPayoutCaseData() {
+    return List.of(
+        new HighPayoutCaseData(PARTNER_VENDOR, GOLD_VENDOR, 1000.0, 0.0, true, true),
+        new HighPayoutCaseData(PARTNER_VENDOR, GOLD_VENDOR, 1000.0, 0.0, false, false),
+        new HighPayoutCaseData(PARTNER_VENDOR, GOLD_VENDOR, 1000.0, 700.0, true, false),
+        new HighPayoutCaseData(PARTNER_VENDOR, GOLD_VENDOR, 1000.0, 500.0, true, true),
+        new HighPayoutCaseData(PARTNER_VENDOR, GOLD_VENDOR, 1000.0, 500.01, true, false),
+        new HighPayoutCaseData(PARTNER_VENDOR, SILVER_VENDOR, 100_000.0, 500.01, true, true),
+        new HighPayoutCaseData(PARTNER_VENDOR, SILVER_VENDOR, 100_000.0, 5000.0, true, true),
+        new HighPayoutCaseData(GOLD_VENDOR, SILVER_VENDOR, 100_000.0, 0.0, true, true));
+  }
+
+  @ParameterizedTest
+  @MethodSource("singleAssetCaseData")
+  public void singleAsset(SingleAssetCaseData data) {
+    searchResults.addFound(data.candidate);
+    dealEligibility.put(data.candidate, data.eligible);
+
+    sut.optimize(searchResults);
+
+    thenAssetAdded(data.candidate, data.included);
+  }
+
+  @ParameterizedTest
+  @MethodSource("highPayoutCaseData")
+  public void highPayoutLowerGradeAsset(HighPayoutCaseData data) {
+    searchResults.addFound(data.highPayout);
+    dealEligibility.put(data.highPayout, true);
+
+    searchResults.addFound(data.candidate);
+    dealEligibility.put(data.candidate, data.eligible);
+
+    sut.optimize(searchResults);
+
+    thenHotspotHas(Deals, data.highPayout);
+    thenAssetAdded(data.candidate, data.included);
   }
 
   @Test
   public void lowPayoutLowerGradeAssetCases() {}
-
-  private void singleAssetCase(
-      AssetVendor vendor,
-      String royalties,
-      String revenue,
-      boolean isDealEligible,
-      boolean shouldBeAdded) {
-    setup();
-
-    var candidate = asset(vendor, assetPurchaseInfo(revenue, royalties), assetPurchaseInfo());
-    searchResults.addFound(candidate);
-    dealEligibility.put(candidate, isDealEligible);
-
-    sut.optimize(searchResults);
-
-    thenAssetAdded(candidate, shouldBeAdded);
-  }
-
-  private void highPayoutLowerGradeAssetCases(
-      AssetVendor highPayoutVendor,
-      AssetVendor vendor,
-      String royalties,
-      String revenue,
-      boolean isDealEligible,
-      boolean shouldBeAdded) {
-    setup();
-
-    var highPayout =
-        asset(highPayoutVendor, assetPurchaseInfo("1000000.00", "0"), assetPurchaseInfo());
-    searchResults.addFound(highPayout);
-    dealEligibility.put(highPayout, true);
-
-    var candidate = asset(vendor, assetPurchaseInfo(revenue, royalties), assetPurchaseInfo());
-    searchResults.addFound(candidate);
-    dealEligibility.put(candidate, isDealEligible);
-
-    sut.optimize(searchResults);
-
-    thenHotspotHas(Deals, highPayout);
-    thenAssetAdded(candidate, shouldBeAdded);
-  }
 
   private void thenAssetAdded(Asset candidate, boolean shouldBeAdded) {
     if (shouldBeAdded) {
       thenHotspotHas(Deals, candidate);
     } else {
       thenHotspotHasNot(Deals, candidate);
+    }
+  }
+
+  static class SingleAssetCaseData {
+    private final Asset candidate;
+    private final boolean eligible;
+    private final boolean included;
+
+    public SingleAssetCaseData(
+        AssetVendor vendor, double revenue, double royalties, boolean eligible, boolean included) {
+      candidate = asset(vendor, assetPurchaseInfo(revenue, royalties), assetPurchaseInfo());
+      this.eligible = eligible;
+      this.included = included;
+    }
+  }
+
+  static class HighPayoutCaseData {
+    private final Asset highPayout;
+    private final Asset candidate;
+    private final boolean eligible;
+    private final boolean included;
+
+    public HighPayoutCaseData(
+        AssetVendor highPayoutVendor,
+        AssetVendor vendor,
+        double revenue,
+        double royalties,
+        boolean eligible,
+        boolean included) {
+      highPayout =
+          asset(highPayoutVendor, assetPurchaseInfo(1_000_000.0, 0.0), assetPurchaseInfo());
+      candidate = asset(vendor, assetPurchaseInfo(revenue, royalties), assetPurchaseInfo());
+      this.eligible = eligible;
+      this.included = included;
     }
   }
 }
