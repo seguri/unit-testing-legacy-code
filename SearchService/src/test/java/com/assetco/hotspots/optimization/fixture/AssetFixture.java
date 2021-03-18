@@ -15,6 +15,10 @@ public class AssetFixture {
     return asset(vendor, assetPurchaseInfo(), assetPurchaseInfo(), emptyAssetTopics());
   }
 
+  public static Asset asset(AssetVendor vendor, AssetTopic topic) {
+    return asset(vendor, List.of(topic));
+  }
+
   public static Asset asset(AssetVendor vendor, List<AssetTopic> topics) {
     return asset(vendor, assetPurchaseInfo(), assetPurchaseInfo(), topics);
   }
