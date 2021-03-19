@@ -1,5 +1,7 @@
 package com.assetco.hotspots.optimization;
 
+import static com.assetco.hotspots.optimization.fixture.AssetFixture.asset;
+import static com.assetco.hotspots.optimization.fixture.AssetPurchaseInfoFixture.assetPurchaseInfo;
 import static com.assetco.hotspots.optimization.fixture.AssetVendorFixture.assetVendor;
 import static com.assetco.search.results.AssetVendorRelationshipLevel.Basic;
 import static com.assetco.search.results.AssetVendorRelationshipLevel.Gold;
@@ -10,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.assetco.search.results.Asset;
+import com.assetco.search.results.AssetPurchaseInfo;
 import com.assetco.search.results.AssetVendor;
 import com.assetco.search.results.HotspotKey;
 import com.assetco.search.results.SearchResults;
@@ -28,6 +31,10 @@ abstract class AbstractOptimizerTest {
   protected Map<Asset, Boolean> dealEligibility;
   protected SearchResults searchResults;
   protected SearchResultHotspotOptimizer sut;
+
+  protected static Asset partnerAsset(AssetPurchaseInfo purchaseInfoLast30Days) {
+    return asset(PARTNER_VENDOR, purchaseInfoLast30Days, assetPurchaseInfo());
+  }
 
   @BeforeEach
   void setup() {
