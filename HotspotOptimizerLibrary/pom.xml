@@ -25,4 +25,44 @@
       <version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>pitest</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.pitest</groupId>
+            <artifactId>pitest-maven</artifactId>
+            <version>1.6.4</version>
+            <configuration>
+              <targetClasses>
+                <param>com.assetco.hotspots.optimization.*</param>
+              </targetClasses>
+              <targetTests>
+                <param>com.assetco.hotspots.optimization.*</param>
+              </targetTests>
+            </configuration>
+            <executions>
+              <execution>
+                <id>pit-report</id>
+                <!-- attach the goal to mvn test phase -->
+                <phase>test</phase>
+                <goals>
+                  <goal>mutationCoverage</goal>
+                </goals>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-junit5-plugin</artifactId>
+                <version>0.14</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
