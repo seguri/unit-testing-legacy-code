@@ -35,11 +35,6 @@ class DealsPinningTest extends AbstractOptimizerTest {
             true),
         Arguments.of(
             highPayoutAsset(PARTNER_VENDOR),
-            asset(GOLD_VENDOR, assetPurchaseInfo(1000.0, 0.0), assetPurchaseInfo()),
-            false,
-            false),
-        Arguments.of(
-            highPayoutAsset(PARTNER_VENDOR),
             asset(GOLD_VENDOR, assetPurchaseInfo(1000.0, 700.0), assetPurchaseInfo()),
             true,
             false),
