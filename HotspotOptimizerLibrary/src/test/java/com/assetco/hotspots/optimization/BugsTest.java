@@ -5,7 +5,6 @@ import static com.assetco.hotspots.optimization.fixture.AssetPurchaseInfoFixture
 import static com.assetco.hotspots.optimization.fixture.AssetTopicFixture.assetTopic;
 import static com.assetco.hotspots.optimization.fixture.AssetVendorFixture.assetVendor;
 import static com.assetco.search.results.AssetVendorRelationshipLevel.Basic;
-import static com.assetco.search.results.AssetVendorRelationshipLevel.Partner;
 import static com.assetco.search.results.HotspotKey.HighValue;
 import static com.assetco.search.results.HotspotKey.Highlight;
 import static com.assetco.search.results.HotspotKey.Showcase;
@@ -19,16 +18,12 @@ class BugsTest extends AbstractOptimizerTest {
 
   @Test
   void prevailingPartnerReceivesFirstFiveItemsInShowcase() {
-    var otherPartnerVendor = assetVendor(Partner);
     var expected = new ArrayList<Asset>();
     expected.add(assetInSearchResults(asset(PARTNER_VENDOR)));
-    assetInSearchResults(asset(otherPartnerVendor));
-    expected.add(assetInSearchResults(asset(PARTNER_VENDOR)));
-    expected.add(assetInSearchResults(asset(PARTNER_VENDOR)));
-    expected.add(assetInSearchResults(asset(PARTNER_VENDOR)));
-    expected.add(assetInSearchResults(asset(PARTNER_VENDOR)));
+    assetInSearchResults(asset(OTHER_PARTNER_VENDOR));
+    expected.addAll(assetsInSearchResults(4, () -> asset(PARTNER_VENDOR)));
 
-    sut.optimize(searchResults);
+    whenOptimize();
 
     thenHotspotHasExactly(Showcase, expected);
   }
@@ -38,15 +33,11 @@ class BugsTest extends AbstractOptimizerTest {
     var hotTopic = assetTopic();
     var topic = assetTopic();
     sut.setHotTopics(() -> List.of(hotTopic, topic));
-    var expected = new ArrayList<Asset>();
-    expected.add(assetInSearchResults(asset(BASIC_VENDOR, topic)));
-    expected.add(assetInSearchResults(asset(BASIC_VENDOR, topic)));
-    assetInSearchResults(asset(BASIC_VENDOR, hotTopic));
-    assetInSearchResults(asset(BASIC_VENDOR, hotTopic));
-    assetInSearchResults(asset(BASIC_VENDOR, hotTopic));
+    var expected = new ArrayList<>(assetsInSearchResults(2, () -> asset(BASIC_VENDOR, topic)));
+    assetsInSearchResults(3, () -> asset(BASIC_VENDOR, hotTopic));
     expected.add(assetInSearchResults(asset(BASIC_VENDOR, topic)));
 
-    sut.optimize(searchResults);
+    whenOptimize();
 
     thenHotspotHas(Highlight, expected);
   }
@@ -59,13 +50,8 @@ class BugsTest extends AbstractOptimizerTest {
     var asset =
         assetInSearchResults(asset(basicVendor, purchaseInfoLast30Days, purchaseInfoLast24Hours));
 
-    sut.optimize(searchResults);
+    whenOptimize();
 
     thenHotspotHasExactly(HighValue, asset);
-  }
-
-  private Asset assetInSearchResults(Asset asset) {
-    searchResults.addFound(asset);
-    return asset;
   }
 }

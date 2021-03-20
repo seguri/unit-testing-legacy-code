@@ -5,6 +5,7 @@ import static com.assetco.hotspots.optimization.fixture.AssetPurchaseInfoFixture
 import static com.assetco.search.results.HotspotKey.Deals;
 
 import com.assetco.search.results.Asset;
+import com.assetco.search.results.AssetPurchaseInfo;
 import com.assetco.search.results.AssetVendor;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 class DealsPinningTest extends AbstractOptimizerTest {
+
+  private static Asset partnerAsset(AssetPurchaseInfo purchaseInfoLast30Days) {
+    return asset(PARTNER_VENDOR, purchaseInfoLast30Days, assetPurchaseInfo());
+  }
 
   private static Stream<Arguments> singleAssetArguments() {
     return Stream.of(
@@ -75,7 +80,7 @@ class DealsPinningTest extends AbstractOptimizerTest {
     searchResults.addFound(candidate);
     dealEligibility.put(candidate, eligible);
 
-    sut.optimize(searchResults);
+    whenOptimize();
 
     thenAssetAdded(candidate, included);
   }
@@ -90,7 +95,7 @@ class DealsPinningTest extends AbstractOptimizerTest {
     searchResults.addFound(candidate);
     dealEligibility.put(candidate, eligible);
 
-    sut.optimize(searchResults);
+    whenOptimize();
 
     thenHotspotHas(Deals, highPayout);
     thenAssetAdded(candidate, included);
