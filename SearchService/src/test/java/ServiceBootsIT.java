@@ -21,8 +21,7 @@ public class ServiceBootsIT {
 
   @BeforeAll
   public static void bootService() throws Exception {
-    String command =
-        "docker-compose -f SearchService.docker-compose.yml up --no-build --remove-orphans";
+    String command = "docker-compose up --no-build --remove-orphans";
     process = execInRootFolder(command);
 
     transferStreamToOutput(

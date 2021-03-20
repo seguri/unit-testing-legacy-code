@@ -108,9 +108,7 @@
         <version>4.0.0</version>
         <configuration>
           <composeFile>${project.parent.basedir}/docker-compose.yml</composeFile>
-          <buildArgs>
-            <removeOrphans>true</removeOrphans>
-          </buildArgs>
+          <removeOrphans>true</removeOrphans>
         </configuration>
         <executions>
           <execution>
