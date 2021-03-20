@@ -28,13 +28,17 @@ public class ServiceBootsIT {
     transferStreamToOutput(
         process.getInputStream(),
         line -> {
-          if (line.contains("Started Application")) startedApplication = true;
+          if (line.contains("Started Application")) {
+            startedApplication = true;
+          }
         },
         () -> traceServer("exit code = " + process.exitValue()));
     transferStreamToOutput(process.getErrorStream(), line -> {}, () -> {});
 
     final var tries = 1000;
-    for (var i = 0; i < tries && !startedApplication; i++) Thread.sleep(10);
+    for (var i = 0; i < tries && !startedApplication; i++) {
+      Thread.sleep(10);
+    }
   }
 
   private static void transferStreamToOutput(
