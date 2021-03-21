@@ -13,7 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class RelationshipsPinningTest extends AbstractOptimizerTest {
+public class RelationshipsBasedPinningTest extends AbstractOptimizerTest {
 
   private static Stream<Arguments> countData() {
     return Stream.of(
