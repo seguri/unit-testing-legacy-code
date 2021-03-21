@@ -1,7 +1,7 @@
 package com.assetco.hotspots.optimization.fixture;
 
 import static com.assetco.hotspots.optimization.fixture.AssetPurchaseInfoFixture.assetPurchaseInfo;
-import static com.assetco.hotspots.optimization.fixture.AssetTopicFixture.emptyAssetTopics;
+import static java.util.Collections.singletonList;
 
 import com.assetco.search.results.Asset;
 import com.assetco.search.results.AssetPurchaseInfo;
@@ -12,22 +12,18 @@ import java.util.List;
 public class AssetFixture {
 
   public static Asset asset(AssetVendor vendor) {
-    return asset(vendor, assetPurchaseInfo(), assetPurchaseInfo(), emptyAssetTopics());
+    return asset(vendor, assetPurchaseInfo(), assetPurchaseInfo(), List.of());
   }
 
   public static Asset asset(AssetVendor vendor, AssetTopic topic) {
-    return asset(vendor, List.of(topic));
-  }
-
-  public static Asset asset(AssetVendor vendor, List<AssetTopic> topics) {
-    return asset(vendor, assetPurchaseInfo(), assetPurchaseInfo(), topics);
+    return asset(vendor, assetPurchaseInfo(), assetPurchaseInfo(), singletonList(topic));
   }
 
   public static Asset asset(
       AssetVendor vendor,
       AssetPurchaseInfo purchaseInfoLast30Days,
       AssetPurchaseInfo purchaseInfoLast24Hours) {
-    return asset(vendor, purchaseInfoLast30Days, purchaseInfoLast24Hours, emptyAssetTopics());
+    return asset(vendor, purchaseInfoLast30Days, purchaseInfoLast24Hours, List.of());
   }
 
   public static Asset asset(
