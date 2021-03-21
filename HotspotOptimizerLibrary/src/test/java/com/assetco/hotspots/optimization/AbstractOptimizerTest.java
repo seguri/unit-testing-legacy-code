@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.assetco.search.results.Asset;
+import com.assetco.search.results.AssetTopic;
 import com.assetco.search.results.AssetVendor;
 import com.assetco.search.results.HotspotKey;
 import com.assetco.search.results.SearchResults;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,12 +42,16 @@ abstract class AbstractOptimizerTest {
     sut = new SearchResultHotspotOptimizer();
   }
 
+  protected void hotTopics(AssetTopic... topics) {
+    sut.setHotTopics(() -> Arrays.asList(topics));
+  }
+
   protected Asset assetInSearchResults(Asset asset) {
     searchResults.addFound(asset);
     return asset;
   }
 
-  protected Collection<Asset> assetsInSearchResults(int count, Supplier<Asset> generator) {
+  protected List<Asset> assetsInSearchResults(int count, Supplier<Asset> generator) {
     return IntStream.range(0, count)
         .mapToObj(i -> assetInSearchResults(generator.get()))
         .collect(Collectors.toList());

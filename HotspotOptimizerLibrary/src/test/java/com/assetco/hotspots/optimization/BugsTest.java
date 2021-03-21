@@ -11,7 +11,6 @@ import static com.assetco.search.results.HotspotKey.Showcase;
 
 import com.assetco.search.results.Asset;
 import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BugsTest extends AbstractOptimizerTest {
@@ -32,8 +31,8 @@ class BugsTest extends AbstractOptimizerTest {
   void allItemsDeservingHighlightAreHighlighted() {
     var hotTopic = assetTopic();
     var topic = assetTopic();
-    sut.setHotTopics(() -> List.of(hotTopic, topic));
-    var expected = new ArrayList<>(assetsInSearchResults(2, () -> asset(BASIC_VENDOR, topic)));
+    hotTopics(hotTopic, topic);
+    var expected = assetsInSearchResults(2, () -> asset(BASIC_VENDOR, topic));
     assetsInSearchResults(3, () -> asset(BASIC_VENDOR, hotTopic));
     expected.add(assetInSearchResults(asset(BASIC_VENDOR, topic)));
 
